@@ -1,7 +1,9 @@
 #include <stdio.h>
-
 int main()
 {
-    printf("Hello,World!\n");
+    char s[64];
+    printf("ÇëÊäÈëÄÚÈÝ£º");
+    scanf("%s",s);
+    printf("ÄãÊäÈë£º%s\n",s);
     return 0;
 }
