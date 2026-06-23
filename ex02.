@@ -1,0 +1,16 @@
+// ex02 1Hz LED闪烁，使用millis()实现无延时
+const int ledPin = 4;
+unsigned long previousTime = 0;
+const long blinkInterval = 500; // 500ms亮、500ms灭，1Hz
+
+void setup() {
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  unsigned long currentTime = millis();
+  if (currentTime - previousTime >= blinkInterval) {
+    previousTime = currentTime;
+    digitalWrite(ledPin, !digitalRead(ledPin));
+  }
+}
