@@ -1,0 +1,55 @@
+// ex03 SOS灯光信号，millis非阻塞实现
+#define LED_PIN 4
+unsigned long lastTime = 0;
+unsigned long nowTime;
+
+// 时间参数定义
+const int SHORT_FLASH = 200;
+const int LONG_FLASH = 600;
+const int INTERVAL_GAP = 200;
+const int SOS_WAIT = 2000; // 整套SOS结束后停顿2秒
+
+// 程序阶段标记
+int workStage = 0;
+
+void setup() {
+  pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN, LOW);
+}
+
+void loop() {
+  nowTime = millis();
+  if (nowTime - lastTime < INTERVAL_GAP) return;
+
+  switch (workStage) {
+    case 0: // 3次短闪
+      flashTimes(3, SHORT_FLASH);
+      workStage++;
+      break;
+    case 1: // 3次长闪
+      flashTimes(3, LONG_FLASH);
+      workStage++;
+      break;
+    case 2: // 3次短闪
+      flashTimes(3, SHORT_FLASH);
+      workStage++;
+      break;
+    case 3: // 整套SOS结束，长停顿
+      digitalWrite(LED_PIN, LOW);
+      delay(SOS_WAIT);
+      workStage = 0;
+      lastTime = millis();
+      break;
+  }
+}
+
+// 自定义函数：循环闪烁n次，单次亮onMs毫秒
+void flashTimes(int n, int onMs) {
+  for (int i = 0; i < n; i++) {
+    digitalWrite(LED_PIN, HIGH);
+    delay(onMs);
+    digitalWrite(LED_PIN, LOW);
+    delay(INTERVAL_GAP);
+  }
+  lastTime = millis();
+}
